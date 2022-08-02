@@ -26,9 +26,9 @@ latencyMetricName = "latency"
 
 if "INSTANCE_ID" in os.environ:
     instanceId = os.environ["INSTANCE_ID"]
-    if not instanceId.strip() == "":
-        latencyMetricName += "_" + instanceId
-        apiBytesSentMetricName += "_" + instanceId
+    if instanceId.strip() != "":
+        latencyMetricName += f"_{instanceId}"
+        apiBytesSentMetricName += f"_{instanceId}"
 
 apiBytesSentCounter = meter.create_counter(
     apiBytesSentMetricName, "API request load sent in bytes", "one", int
@@ -52,4 +52,3 @@ try:
     metrics.get_meter_provider().start_pipeline(meter, exporter, 5)
 except:
     logger.warning("Metrics Pipeline was not started.")
-    pass
